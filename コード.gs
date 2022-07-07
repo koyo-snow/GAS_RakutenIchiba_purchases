@@ -10,9 +10,6 @@ let TOTALLING_SHEET = SPREAD_SHEET.getSheetByName('件数');
 let TOTAL_AMOUNT_SHEET = SPREAD_SHEET.getSheetByName('月別_価格の合計額');
 let TOTAL_PAYMENT_SHEET = SPREAD_SHEET.getSheetByName('月別_支払金額の合計額');
 
-/** セルで指定した日数。メールで遡る日数を指定する。 */
-let DATE_BACK_TO = RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 24).getValue();  // => 33.0
-
 /** 全部の関数を実行する関数 */
 function allExecution() {
   sheet0Execution();
@@ -24,6 +21,7 @@ function allExecution() {
 
 /** 「楽天市場購入履歴」シートで実行する関数 */
 function sheet0Execution() {
+  
   addRakutenIchibaDetail();
   Logger.log('addRakutenIchibaDetailが終了しました。');
   canceledRakutenIchibaDetail();
@@ -56,6 +54,9 @@ function sheet3totallingPayment() {
 }
 
 function addRakutenIchibaDetail() {
+  /** セルで指定した日数。メールで遡る日数を指定する。 */
+  let DATE_BACK_TO = RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 24).getValue();
+
   let SUBJECT = '【楽天市場】注文内容ご確認（自動配信メール）'; // 楽天市場の注文お知らせメールの題名
   let ADDRESS = 'order@rakuten.co.jp';   // 楽天市場の注文お知らせメールのアドレス
 
@@ -495,6 +496,9 @@ function getColName(num) {
  * coloringでは、ここの入力を見て色を付ける。
  * */
 function canceledRakutenIchibaDetail() {
+  /** セルで指定した日数。メールで遡る日数を指定する。 */
+  let DATE_BACK_TO = RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 24).getValue();
+
   let TABLE_LAST_ROW = RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getLastRow();
   if (TABLE_LAST_ROW === 5) {
     return;
@@ -609,25 +613,25 @@ function coloring() {
   let UNDER_NUM_1 = TOTALLING_SHEET.getRange(5, 2).getValue();
   let highNum1 = UNDER_NUM_1.replace(/[^0-9]/g, '');
   let num1ColorCode = TOTALLING_SHEET.getRange(5, 2).getBackground();
-  let lowNum1 = highNum0 + 1;
+  let lowNum1 = highNum0;
 
   /** 5001~10000を取得する。 */
   let UNDER_NUM_2 = TOTALLING_SHEET.getRange(6, 2).getValue();
   let highNum2 = UNDER_NUM_2.replace(/[^0-9]/g, '');
   let num2ColorCode = TOTALLING_SHEET.getRange(6, 2).getBackground();
-  let lowNum2 = highNum1 + 1;
+  let lowNum2 = highNum1;
 
   /** 10001~50000を取得する。 */
   let UNDER_NUM_3 = TOTALLING_SHEET.getRange(7, 2).getValue();
   let highNum3 = UNDER_NUM_3.replace(/[^0-9]/g, '');
   let num3ColorCode = TOTALLING_SHEET.getRange(7, 2).getBackground();
-  let lowNum3 = highNum2 + 1;
+  let lowNum3 = highNum2;
 
   /** 50001~を取得する。 */
   // let UNDER_NUM_4 = TOTALLING_SHEET.getRange(8, 2).getValue();
   // let highNum4 = UNDER_NUM_4.replace(/[^0-9]/g, '');
   let num4ColorCode = TOTALLING_SHEET.getRange(8, 2).getBackground();
-  let lowNum4 = highNum3 + 1;
+  let lowNum4 = highNum3;
 
   let CANCELED = TOTALLING_SHEET.getRange(9, 2).getValue();
   let canceledColorCode = TOTALLING_SHEET.getRange(9, 2).getBackground();
@@ -1167,4 +1171,205 @@ function totalPayment() {
       }
     }
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function initialization() {
+  initSheets();
+  initSheet0();
+  initSheet1();
+  initSheet2();
+  initSheet3();
+}
+
+function initSheets() {
+  if (!SPREAD_SHEET.getSheetByName('楽天市場購入履歴')) {
+    let sheet0 = SPREAD_SHEET.insertSheet();
+    sheet0.setName('楽天市場購入履歴');
+  }
+  if (!SPREAD_SHEET.getSheetByName('件数')) {
+    let sheet1 = SPREAD_SHEET.insertSheet();
+    sheet1.setName('件数');
+  }
+  if (!SPREAD_SHEET.getSheetByName('月別_価格の合計額')) {
+    let sheet2 = SPREAD_SHEET.insertSheet();
+    sheet2.setName('月別_価格の合計額');
+  }
+  if (!SPREAD_SHEET.getSheetByName('月別_支払金額の合計額')) {
+    let sheet3 = SPREAD_SHEET.insertSheet();
+    sheet3.setName('月別_支払金額の合計額');
+  }
+}
+
+function initSheet0() {
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setValue('楽天市場購入履歴');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1, 2, 21).merge();
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setBackground('#ffce9e');
+  
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 1).setValue('記入日時');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 2).setValue('受注番号');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 3).setValue('注文日時');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 4).setValue('メール受信日');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 5).setValue('ショップ名');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 6).setValue('ショップ電話番号');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 7).setValue('ショップURL');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 8).setValue('ショップ問い合わせURL');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 9).setValue('購入した商品（単品or複数）');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 10).setValue('合計金額');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange("J:J").setNumberFormat("[$¥-411]#,##0");
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 11).setValue('合計数');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 12).setValue('ポイント利用分');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 13).setValue('クーポン利用分');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 14).setValue('送料');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange("N:N").setNumberFormat("[$¥-411]#,##0");
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 15).setValue('支払い金額');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange("O:O").setNumberFormat("[$¥-411]#,##0");
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 16).setValue('配送方法');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 17).setValue('獲得予定P');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 18).setValue('お届け先氏名');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 19).setValue('お届け先住所');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 20).setValue('お届け先電話番号');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 21).setValue('ステータス');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 1, 1, 21).setBackground("#c9daf8");
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 1, 1, 21).setBorder(true, true, true, true, true, true);
+
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 23).setValue('全部実行ボタンは環境や情報量によっては最後まで終わらないこともあります');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 23).setValue('遡る日数');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 23).setBackground('#b7e1cd');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 24).setValue(31);
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(3, 23, 1, 2).setBorder(true, true, true, true, true, true);
+
+}
+
+function initSheet1() {
+  TOTALLING_SHEET.getRange(2, 2).setValue('値段別購入件数');
+  
+  TOTALLING_SHEET.getRange(3, 2).setValue('商品の値段');
+  TOTALLING_SHEET.getRange(3, 3).setValue('件数');
+
+  TOTALLING_SHEET.getRange(4, 2).setValue('1000円以下');
+  TOTALLING_SHEET.getRange(4, 2).setBackground("#9effff");
+  TOTALLING_SHEET.getRange(5, 2).setValue('5000円以下');
+  TOTALLING_SHEET.getRange(5, 2).setBackground("#9eff9e");
+  TOTALLING_SHEET.getRange(6, 2).setValue('10000円以下');
+  TOTALLING_SHEET.getRange(6, 2).setBackground("#ffff9e");
+  TOTALLING_SHEET.getRange(7, 2).setValue('50000円以下');
+  TOTALLING_SHEET.getRange(7, 2).setBackground("#ffce9e");
+  TOTALLING_SHEET.getRange(8, 2).setValue('50000円以上');
+  TOTALLING_SHEET.getRange(8, 2).setBackground("#ff6d01");
+  TOTALLING_SHEET.getRange(9, 2).setValue('キャンセル済み');
+  TOTALLING_SHEET.getRange(9, 2).setBackground("#ff9eff");
+  TOTALLING_SHEET.getRange(4, 2, 6, 2).setBorder(true, true, true, true, true, true);
+
+  TOTALLING_SHEET.getRange(11, 2).setValue('月別購入件数(キャンセルも反映)');
+  
+  TOTALLING_SHEET.getRange(12, 2).setValue('月＼年');
+
+  TOTALLING_SHEET.getRange(12, 3).setValue(2018);
+  TOTALLING_SHEET.getRange(12, 4).setValue(2019);
+  TOTALLING_SHEET.getRange(12, 5).setValue(2020);
+  TOTALLING_SHEET.getRange(12, 6).setValue(2021);
+  TOTALLING_SHEET.getRange(12, 7).setValue(2022);
+  TOTALLING_SHEET.getRange(12, 8).setValue(2023);
+  TOTALLING_SHEET.getRange(12, 9).setValue(2024);
+  TOTALLING_SHEET.getRange(12, 10).setValue(2025);
+  TOTALLING_SHEET.getRange(12, 11).setValue(2026);
+
+  TOTALLING_SHEET.getRange(13, 2).setValue(1);
+  TOTALLING_SHEET.getRange(14, 2).setValue(2);
+  TOTALLING_SHEET.getRange(15, 2).setValue(3);
+  TOTALLING_SHEET.getRange(16, 2).setValue(4);
+  TOTALLING_SHEET.getRange(17, 2).setValue(5);
+  TOTALLING_SHEET.getRange(18, 2).setValue(6);
+  TOTALLING_SHEET.getRange(19, 2).setValue(7);
+  TOTALLING_SHEET.getRange(20, 2).setValue(8);
+  TOTALLING_SHEET.getRange(21, 2).setValue(9);
+  TOTALLING_SHEET.getRange(22, 2).setValue(10);
+  TOTALLING_SHEET.getRange(23, 2).setValue(11);
+  TOTALLING_SHEET.getRange(24, 2).setValue(12);
+
+  TOTALLING_SHEET.getRange(12, 2, 13, 10).setBorder(true, true, true, true, true, true);
+  
+
+}
+
+function initSheet2() {
+  TOTAL_AMOUNT_SHEET.getRange(2, 2).setValue('月別合計価格(キャンセルも反映、ポイント・クーポン控除前)');
+  TOTAL_AMOUNT_SHEET.getRange(2, 2, 1, 10).merge();
+  TOTAL_AMOUNT_SHEET.getRange(2, 2).setBackground('#b6d7a8');
+
+  TOTAL_AMOUNT_SHEET.getRange(3, 2).setValue("月＼年");
+
+  TOTAL_AMOUNT_SHEET.getRange(3, 3).setValue(2018);
+  TOTAL_AMOUNT_SHEET.getRange(3, 4).setValue(2019);
+  TOTAL_AMOUNT_SHEET.getRange(3, 5).setValue(2020);
+  TOTAL_AMOUNT_SHEET.getRange(3, 6).setValue(2021);
+  TOTAL_AMOUNT_SHEET.getRange(3, 7).setValue(2022);
+  TOTAL_AMOUNT_SHEET.getRange(3, 8).setValue(2023);
+  TOTAL_AMOUNT_SHEET.getRange(3, 9).setValue(2024);
+  TOTAL_AMOUNT_SHEET.getRange(3, 10).setValue(2025);
+  TOTAL_AMOUNT_SHEET.getRange(3, 11).setValue(2026);
+
+  TOTAL_AMOUNT_SHEET.getRange(4, 2).setValue(1);
+  TOTAL_AMOUNT_SHEET.getRange(5, 2).setValue(2);
+  TOTAL_AMOUNT_SHEET.getRange(6, 2).setValue(3);
+  TOTAL_AMOUNT_SHEET.getRange(7, 2).setValue(4);
+  TOTAL_AMOUNT_SHEET.getRange(8, 2).setValue(5);
+  TOTAL_AMOUNT_SHEET.getRange(9, 2).setValue(6);
+  TOTAL_AMOUNT_SHEET.getRange(10, 2).setValue(7);
+  TOTAL_AMOUNT_SHEET.getRange(11, 2).setValue(8);
+  TOTAL_AMOUNT_SHEET.getRange(12, 2).setValue(9);
+  TOTAL_AMOUNT_SHEET.getRange(13, 2).setValue(10);
+  TOTAL_AMOUNT_SHEET.getRange(14, 2).setValue(11);
+  TOTAL_AMOUNT_SHEET.getRange(15, 2).setValue(12);
+
+  TOTAL_AMOUNT_SHEET.getRange(3, 2, 13, 10).setBorder(true, true, true, true, true, true);
+  TOTAL_AMOUNT_SHEET.getRange(4, 3, 12, 9).setNumberFormat("[$¥-411]#,##0");
+}
+
+function initSheet3() {
+  TOTAL_PAYMENT_SHEET.getRange(2, 2).setValue('月別合計価格(キャンセルも反映、ポイント・クーポン控除前)');
+  TOTAL_PAYMENT_SHEET.getRange(2, 2, 1, 10).merge();
+  TOTAL_PAYMENT_SHEET.getRange(2, 2).setBackground('#b6d7a8');
+
+  TOTAL_PAYMENT_SHEET.getRange(3, 2).setValue("月＼年");
+
+  TOTAL_PAYMENT_SHEET.getRange(3, 3).setValue(2018);
+  TOTAL_PAYMENT_SHEET.getRange(3, 4).setValue(2019);
+  TOTAL_PAYMENT_SHEET.getRange(3, 5).setValue(2020);
+  TOTAL_PAYMENT_SHEET.getRange(3, 6).setValue(2021);
+  TOTAL_PAYMENT_SHEET.getRange(3, 7).setValue(2022);
+  TOTAL_PAYMENT_SHEET.getRange(3, 8).setValue(2023);
+  TOTAL_PAYMENT_SHEET.getRange(3, 9).setValue(2024);
+  TOTAL_PAYMENT_SHEET.getRange(3, 10).setValue(2025);
+  TOTAL_PAYMENT_SHEET.getRange(3, 11).setValue(2026);
+
+  TOTAL_PAYMENT_SHEET.getRange(4, 2).setValue(1);
+  TOTAL_PAYMENT_SHEET.getRange(5, 2).setValue(2);
+  TOTAL_PAYMENT_SHEET.getRange(6, 2).setValue(3);
+  TOTAL_PAYMENT_SHEET.getRange(7, 2).setValue(4);
+  TOTAL_PAYMENT_SHEET.getRange(8, 2).setValue(5);
+  TOTAL_PAYMENT_SHEET.getRange(9, 2).setValue(6);
+  TOTAL_PAYMENT_SHEET.getRange(10, 2).setValue(7);
+  TOTAL_PAYMENT_SHEET.getRange(11, 2).setValue(8);
+  TOTAL_PAYMENT_SHEET.getRange(12, 2).setValue(9);
+  TOTAL_PAYMENT_SHEET.getRange(13, 2).setValue(10);
+  TOTAL_PAYMENT_SHEET.getRange(14, 2).setValue(11);
+  TOTAL_PAYMENT_SHEET.getRange(15, 2).setValue(12);
+
+  TOTAL_PAYMENT_SHEET.getRange(3, 2, 13, 10).setBorder(true, true, true, true, true, true);
+  TOTAL_PAYMENT_SHEET.getRange(4, 3, 12, 9).setNumberFormat("[$¥-411]#,##0");
 }
