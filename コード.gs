@@ -1218,6 +1218,9 @@ function initSheet0() {
   RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setValue('楽天市場購入履歴');
   RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1, 2, 21).merge();
   RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setBackground('#ffce9e');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setHorizontalAlignment('center');
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setVerticalAlignment("middle");
+  RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(2, 1).setFontSize(18);
   
   RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 1).setValue('記入日時');
   RAKUTEN_ICHIBA_MANAGEMENT_SHEET.getRange(5, 2).setValue('受注番号');
@@ -1310,6 +1313,8 @@ function initSheet2() {
   TOTAL_AMOUNT_SHEET.getRange(2, 2).setValue('月別合計価格(キャンセルも反映、ポイント・クーポン控除前)');
   TOTAL_AMOUNT_SHEET.getRange(2, 2, 1, 10).merge();
   TOTAL_AMOUNT_SHEET.getRange(2, 2).setBackground('#b6d7a8');
+  TOTAL_AMOUNT_SHEET.getRange(2, 2).setHorizontalAlignment('center');
+  TOTAL_AMOUNT_SHEET.getRange(2, 2).setFontSize(18);
 
   TOTAL_AMOUNT_SHEET.getRange(3, 2).setValue("月＼年");
 
@@ -1344,6 +1349,8 @@ function initSheet3() {
   TOTAL_PAYMENT_SHEET.getRange(2, 2).setValue('月別合計価格(キャンセルも反映、ポイント・クーポン控除前)');
   TOTAL_PAYMENT_SHEET.getRange(2, 2, 1, 10).merge();
   TOTAL_PAYMENT_SHEET.getRange(2, 2).setBackground('#b6d7a8');
+  TOTAL_PAYMENT_SHEET.getRange(2, 2).setHorizontalAlignment('center');
+  TOTAL_PAYMENT_SHEET.getRange(2, 2).setFontSize(18);
 
   TOTAL_PAYMENT_SHEET.getRange(3, 2).setValue("月＼年");
 
